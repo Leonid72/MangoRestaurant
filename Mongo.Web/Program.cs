@@ -1,3 +1,6 @@
+using Mango.Web.Services;
+using Mango.Web.Services.IServices;
+
 namespace Mango.Web
 {
     public class Program
@@ -8,6 +11,11 @@ namespace Mango.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //builder.Services.AddHttpClient<IBaseService, BaseService>("MangoAPI");
+            builder.Services.AddHttpClient<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            SD.ProuctAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
             var app = builder.Build();
 

@@ -26,10 +26,7 @@ namespace Mango.Web.Services
             {
                 //var client = _httpClient.CreateClient("MangoAPI");
                 var message = new HttpRequestMessage(apiRequest.ApiType,apiRequest.Url);
-                message.Headers.Add("Accsept", "application/json");
-                _httpClient.DefaultRequestHeaders.Clear();
-                //client.DefaultRequestHeaders.Clear();
-
+                message.Headers.Add("Accept", "application/json");
 
                 if (apiRequest.Data != null)
                 {
@@ -37,7 +34,6 @@ namespace Mango.Web.Services
                 }
                 
                 var apiResponse = await _httpClient.SendAsync(message);
-                //var apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(apiContent)!;
             }

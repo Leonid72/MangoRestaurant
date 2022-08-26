@@ -1,24 +1,37 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Services.IServices;
+using System.Data.SqlTypes;
 
 namespace Mango.Web.Services
 {
     public class ProductService : BaseService, IProductService
     {
-        private readonly IHttpClientFactory _httpClient;
-        public ProductService(IHttpClientFactory httpClient) : base(httpClient)
+        //private readonly IHttpClientFactory _httpClient;
+        public HttpClient _httpClient { get; set; }
+        public ProductService(HttpClient httpClient) : base(httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public Task<T> CreataProductAsync<T>(ProductDto productDto)
+        public async Task<T> CreataProductAsync<T>(ProductDto productDto)
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Post,
+                Data = productDto,
+                Url = SD.ProuctAPIBase + "/api/products",
+                AccessToken = ""
+            });
         }
 
-        public Task<T> DeleteProductAsync<T>(int id)
+        public async Task<T> DeleteProductAsync<T>(int id)
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Delete,
+                Url = SD.ProuctAPIBase + "/api/products" +id,
+                AccessToken = ""
+            });
         }
 
         public void Dispose()
@@ -26,24 +39,35 @@ namespace Mango.Web.Services
             throw new NotImplementedException();
         }
 
-        public Task<T> GetAllProductsAsync<T>()
+        public async Task<T> GetAllProductsAsync<T>()
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Get,
+                Url = SD.ProuctAPIBase + "/api/products",
+                AccessToken = ""
+            });
         }
 
-        public Task<T> GetProductByIdAsync<T>(int id)
+        public async Task<T> GetProductByIdAsync<T>(int id)
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Get,
+                Url = SD.ProuctAPIBase + "/api/products" + id,
+                AccessToken = ""
+            });
         }
 
-        public Task<T> SendAsync<T>(ApiRequest apiRequest)
+        public async Task<T> UpdateProductAsync<T>(ProductDto productDto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> UpdateProductAsync<T>(ProductDto productDto)
-        {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Put,
+                Data = productDto,
+                Url = SD.ProuctAPIBase + "/api/products",
+                AccessToken = ""
+            });
         }
     }
 }
