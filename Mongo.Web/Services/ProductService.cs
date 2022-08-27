@@ -6,7 +6,6 @@ namespace Mango.Web.Services
 {
     public class ProductService : BaseService, IProductService
     {
-        //private readonly IHttpClientFactory _httpClient;
         public HttpClient _httpClient { get; set; }
         public ProductService(HttpClient httpClient) : base(httpClient)
         {
@@ -36,7 +35,7 @@ namespace Mango.Web.Services
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            GC.SuppressFinalize(this);
         }
 
         public async Task<T> GetAllProductsAsync<T>()

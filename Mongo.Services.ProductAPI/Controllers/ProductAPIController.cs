@@ -6,7 +6,7 @@ using Mango.Services.ProductAPI.Repository;
 namespace Mango.Services.ProductAPI.Controllers
 {
     [ApiController]
-    [Route("api/product")]
+    [Route("api/products")]
     public class ProductAPIController : ControllerBase
     {
         protected ResponsDto _respons;

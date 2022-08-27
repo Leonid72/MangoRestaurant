@@ -13,7 +13,6 @@ namespace Mango.Web.Services
     {
         public ResponsDto responsDto { get; set; }
         public HttpClient _httpClient { get; set; }
-        //public IHttpClientFactory _httpClient { get; set; }
         public BaseService(HttpClient httpClient)
         {
             this.responsDto = new ResponsDto();
