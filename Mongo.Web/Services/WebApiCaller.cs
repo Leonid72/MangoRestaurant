@@ -9,21 +9,18 @@ using static Mango.Web.SD;
 
 namespace Mango.Web.Services
 {
-    public class BaseService : IBaseService
+    public class WebApiCaller : IWebApiCaller
     {
-        public ResponsDto responsDto { get; set; }
-        public HttpClient _httpClient { get; set; }
-        public BaseService(HttpClient httpClient)
+        protected HttpClient _httpClient;
+        public WebApiCaller(HttpClient httpClient)
         {
-            this.responsDto = new ResponsDto();
             _httpClient = httpClient;
         }
 
-        public async Task<T> SendAsync<T>(ApiRequest apiRequest)
+        public async Task<T> SendAsync<T>(ApiRequest apiRequest)  
         {
             try
             {
-                //var client = _httpClient.CreateClient("MangoAPI");
                 var message = new HttpRequestMessage(apiRequest.ApiType,apiRequest.Url);
                 message.Headers.Add("Accept", "application/json");
 
@@ -49,9 +46,6 @@ namespace Mango.Web.Services
             }
 
         }
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+
     }
 }

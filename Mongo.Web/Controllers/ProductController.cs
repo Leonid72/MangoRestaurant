@@ -19,7 +19,7 @@ namespace Mango.Web.Controllers
             var res = await _productService.GetAllProductsAsync<ResponsDto>();
             if(res != null && res.IsSuccess)
             {
-                products = JsonConvert.DeserializeObject<List<ProductDto>>(res.Result.ToString());
+                products = JsonConvert.DeserializeObject<List<ProductDto>>(res.Result.ToString()!)!;
             }
             return View(products);
         }
