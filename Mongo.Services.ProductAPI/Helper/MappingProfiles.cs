@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using Mango.Services.ProductAPI.Models;
 using Mango.Services.ProductAPI.Models.Dto;
 

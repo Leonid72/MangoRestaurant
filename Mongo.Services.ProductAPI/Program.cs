@@ -1,9 +1,7 @@
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Mango.Services.ProductAPI;
 using Mango.Services.ProductAPI.DbContexts;
+using Mango.Services.ProductAPI.Middlewares;
 using Mango.Services.ProductAPI.Repository;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleare>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
