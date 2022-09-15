@@ -18,11 +18,19 @@ namespace Mango.Web.Services
             return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Post,productDto));
         }
 
-        public  Task<T> DeleteProductAsync<T>(int id)
+        //public  Task<T> DeleteProductAsync<T>(int id)
+        //{
+        //    return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Delete, $"/api/products/{id}"));
+        //}
+        public async Task<T> DeleteProductAsync<T>(int id)
         {
-            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Delete, $"/api/products/{id}"));
+            return await _webApiCaller.SendAsync<T>(new ApiRequest()
+            {
+                ApiType = HttpMethod.Delete,
+                Url = SD.ProuctAPIBase + "/api/products/" + id,
+                AccessToken = ""
+            });
         }
-
         public  Task<T> GetAllProductsAsync<T>()
         {
             return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Get));
