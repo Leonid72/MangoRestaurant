@@ -67,6 +67,7 @@ builder.Services.AddAuthorization(option =>
         policy.RequireClaim("scope", "mango");
     });
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
