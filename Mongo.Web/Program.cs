@@ -19,6 +19,15 @@ namespace Mango.Web
 
             SD.ProuctAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
+            //builder.Services.AddAuthentication(option =>
+            //{
+            //    option.DefaultScheme = "Cookies";
+            //    option.DefaultChallengeScheme = "oidc";
+
+            //})
+            //.AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
+            //.AddOpenIdConnect("oidc",);
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,7 +40,7 @@ namespace Mango.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
