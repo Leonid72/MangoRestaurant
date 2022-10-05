@@ -21,6 +21,27 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", option =>
+    {
+        option.Authority = "https://localhost:7138/";
+        option.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false
+        };
+    });
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("ApiScope", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "mango");
+    });
+});
+
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mango.Services.ProductAPI", Version = "1" });
@@ -49,25 +70,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", option =>
-    {
-        option.Authority = "https://localhost:7138/";
-        option.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = false
-        };
-    });
-builder.Services.AddAuthorization(option =>
-{
-    option.AddPolicy("ApiScope", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "mango");
-    });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,7 +81,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionHandlingMiddleare>();
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

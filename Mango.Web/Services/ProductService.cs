@@ -1,5 +1,6 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Services.IServices;
+using Newtonsoft.Json.Linq;
 using System.Data.SqlTypes;
 
 namespace Mango.Web.Services
@@ -13,51 +14,51 @@ namespace Mango.Web.Services
            _webApiCaller = webApiCaller;
         }
 
-        public  Task<T> CreataProductAsync<T>(ProductDto productDto)
+        public  Task<T> CreataProductAsync<T>(ProductDto productDto,string token)
         {
-            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Post,productDto));
+            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Post,productDto, token));
         }
 
         //public  Task<T> DeleteProductAsync<T>(int id)
         //{
         //    return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Delete, $"/api/products/{id}"));
         //}
-        public async Task<T> DeleteProductAsync<T>(int id)
+        public async Task<T> DeleteProductAsync<T>(int id, string token)
         {
             return await _webApiCaller.SendAsync<T>(new ApiRequest()
             {
                 ApiType = HttpMethod.Delete,
                 Url = SD.ProuctAPIBase + "/api/products/" + id,
-                AccessToken = ""
+                AccessToken = token
             });
         }
-        public  Task<T> GetAllProductsAsync<T>()
+        public  Task<T> GetAllProductsAsync<T>(string token)
         {
-            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Get));
+            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Get, token));
         }
 
-        public  Task<T> GetProductByIdAsync<T>(int id)
+        public  Task<T> GetProductByIdAsync<T>(int id, string token)
         {
-            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Get, $"/api/products/{id}"));
+            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Get,token, $"/api/products/{id}"));
         }
 
-        public  Task<T> UpdateProductAsync<T>(ProductDto productDto)
+        public  Task<T> UpdateProductAsync<T>(ProductDto productDto, string token)
         {
-            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Put, productDto));
+            return _webApiCaller.SendAsync<T>(CrateRequest(HttpMethod.Put, productDto, token));
         }
 
-        private static ApiRequest CrateRequest(HttpMethod method, string uri = "/api/products")
+        private static ApiRequest CrateRequest(HttpMethod method, string token, string uri = "/api/products")
         {
-            return CrateRequest<object>( method, null, uri);
+            return CrateRequest<object>( method, null, token, uri);
         }
-        private static ApiRequest CrateRequest<T>(HttpMethod method, T? data, string uri = "/api/products")
+        private static ApiRequest CrateRequest<T>(HttpMethod method, T? data, string token, string uri = "/api/products")
         {
             return new ApiRequest()
             {
                 ApiType = method,
                 Data = data,
                 Url = SD.ProuctAPIBase + uri,
-                AccessToken = ""
+                AccessToken = token
             };
         }
     }

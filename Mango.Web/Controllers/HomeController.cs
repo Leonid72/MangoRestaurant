@@ -2,6 +2,7 @@
 using Mango.Web.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Mango.Web.Controllers
 {
@@ -30,13 +31,14 @@ namespace Mango.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         [Authorize]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            //var accessToken = await HttpContext.GetTokenAsync("access_token"); 
             return RedirectToAction(nameof(Index));
         }
         public IActionResult Logout()
         {
-            return SignOut("Cookies","iodc");
+            return SignOut("Cookies","oidc");
         }
     }
 }

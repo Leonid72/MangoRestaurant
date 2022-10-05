@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 using System.Security.Principal;
 using System.Text;
 using static Mango.Web.SD;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace Mango.Web.Services
 {
@@ -28,7 +31,10 @@ namespace Mango.Web.Services
                 {
                     message.Content = JsonContent.Create(apiRequest.Data);
                 }
-                
+                if (!String.IsNullOrEmpty(apiRequest.AccessToken))
+                {
+                    message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.AccessToken);
+                }
                 var apiResponse = await _httpClient.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(apiContent)!;
