@@ -6,7 +6,7 @@ namespace Mango.Web.Models
     {
         public int CartHeaderId { get; set; }
         public string UserId { get; set; }
-        public string CuponCode { get; set; }
+        public string? CuponCode { get; set; }
         public double OrderTotal { get; set; }
     }
 }

@@ -67,6 +67,7 @@ namespace Mango.Web.Controllers
             if (resp != null && resp.IsSuccess)
             {
                 cartDetails.Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(resp.Result));
+                //cartDetails.CartHeader = cartDto.CartHeader;
             }
             List<CartDetailsDto> cartDetailsDtos = new();
             cartDetailsDtos.Add(cartDetails);
