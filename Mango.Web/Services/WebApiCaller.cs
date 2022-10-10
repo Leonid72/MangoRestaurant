@@ -41,7 +41,7 @@ namespace Mango.Web.Services
             }
             catch (Exception ex)
             {
-                var dto = new ResponsDto()
+                var dto = new ResponseDto()
                 {
                     DisplayMessage = "Error",
                     ErrorMessages = new List<string>() { ex.Message.ToString() },

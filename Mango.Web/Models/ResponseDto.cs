@@ -1,6 +1,6 @@
 ﻿namespace Mango.Web.Models
 {
-    public class ResponsDto
+    public class ResponseDto
     {
         public bool IsSuccess { get; set; } = true;
         public object  Result { get; set; }

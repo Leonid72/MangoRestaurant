@@ -19,7 +19,7 @@ namespace Mango.Web.Controllers
         {
             List<ProductDto> products = new();
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var res = await _productService.GetAllProductsAsync<ResponsDto>(accessToken);
+            var res = await _productService.GetAllProductsAsync<ResponseDto>(accessToken);
             if (res != null && res.IsSuccess)
             {
                 products = JsonConvert.DeserializeObject<List<ProductDto>>(res.Result.ToString()!)!;
@@ -39,7 +39,7 @@ namespace Mango.Web.Controllers
             if (ModelState.IsValid)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var res = await _productService.CreataProductAsync<ResponsDto>(model, accessToken);
+                var res = await _productService.CreataProductAsync<ResponseDto>(model, accessToken);
                 if (res != null && res.IsSuccess)
                 {
                     return RedirectToAction(nameof(ProductIndex));
@@ -51,7 +51,7 @@ namespace Mango.Web.Controllers
         public async Task<IActionResult> ProductEdit(int productId)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var res = await _productService.GetProductByIdAsync<ResponsDto>(productId, accessToken);
+            var res = await _productService.GetProductByIdAsync<ResponseDto>(productId, accessToken);
             if (res.Result != null && res.IsSuccess)
             {
                 ProductDto model = JsonConvert.DeserializeObject<ProductDto>(res.Result.ToString()!)!;
@@ -67,7 +67,7 @@ namespace Mango.Web.Controllers
             if (ModelState.IsValid)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var res = await _productService.UpdateProductAsync<ResponsDto>(model, accessToken);
+                var res = await _productService.UpdateProductAsync<ResponseDto>(model, accessToken);
                 if (res != null && res.IsSuccess)
                 {
                     return RedirectToAction(nameof(ProductIndex));
@@ -80,7 +80,7 @@ namespace Mango.Web.Controllers
         public async Task<IActionResult> ProductDelete(int productId)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var res = await _productService.GetProductByIdAsync<ResponsDto>(productId, accessToken);
+            var res = await _productService.GetProductByIdAsync<ResponseDto>(productId, accessToken);
             if (res.Result != null && res.IsSuccess)
             {
                 ProductDto model = JsonConvert.DeserializeObject<ProductDto>(res.Result.ToString()!)!;
@@ -98,7 +98,7 @@ namespace Mango.Web.Controllers
             if(model.ProductId != null)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var res = await _productService.DeleteProductAsync<ResponsDto>(model.ProductId, accessToken);
+                var res = await _productService.DeleteProductAsync<ResponseDto>(model.ProductId, accessToken);
                 if (res.IsSuccess)
                 {
                     return RedirectToAction(nameof(ProductIndex));

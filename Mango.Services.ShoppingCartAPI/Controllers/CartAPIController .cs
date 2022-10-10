@@ -6,11 +6,11 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 {
     [ApiController]
     [Route("api/cart")]
-    public class CartController : Controller
+    public class CartAPIController: Controller
     {
         private readonly ICartRepository _cartRepository;
         protected ResponseDto _response;
-        public CartController(ICartRepository cartRepository)
+        public CartAPIController(ICartRepository cartRepository)
         {
             _cartRepository = cartRepository;
             _response = new ResponseDto();   
@@ -37,8 +37,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                CartDto cart = await _cartRepository.CreateUpdateCart(cartDto);
-                _response.Result = cart;
+                CartDto cartDt = await _cartRepository.CreateUpdateCart(cartDto);
+                _response.Result = cartDt;
             }
             catch (Exception ex)
             {
