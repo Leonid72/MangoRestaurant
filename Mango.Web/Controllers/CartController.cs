@@ -85,6 +85,12 @@ namespace Mango.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Checkout()
+        {
+            return View(await LoadCartDtoBaseOnLoggedInUser());
+        }
+
         private async Task<string> GetAccessToken()
         {
             return await HttpContext.GetTokenAsync("access_token");
