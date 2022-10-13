@@ -38,33 +38,40 @@
                     <hr />
                     @foreach (var cartObj in Model.CartDetails)
                     {
-                    <div class="row h-100">
-                        <div class="col-4 col-md-2 text-center py-2">
+                        <div class="row h-100">
+                            <div class="col-4 col-md-2 text-center py-2">
                                 <img src="@cartObj.Product.ImageUrl" class="rounded" width="100%" />
-                        </div>
-                        <div class="col-8 col-md-5">
+                            </div>
+                            <div class="col-8 col-md-5">
                                 <h5>@cartObj.Product.Name</h5>
-                            <div style="font-size:11px;">@Html.Raw(cartObj.Product.Description)</div>
-                        </div>
-                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
-                            <span style="font-size:17px;">@String.Format("{0:c}",cartObj.Product.Price)</span>
-                        </div>
-                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <div style="font-size:11px;">@Html.Raw(cartObj.Product.Description)</div>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <span style="font-size:17px;">@String.Format("{0:c}",cartObj.Product.Price)</span>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
                                 <span style="font-size:17px;"> @cartObj.Count</span>
-                        </div>
-                        <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                            </div>
+                            <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
                                 <a asp-action="Remove" asp-route-cartDetailsId="@cartObj.CartDetailsId" class="btn btn-outline-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
-                    </div>                 
-                    <hr />
+                        <hr />
                     }
                     <div class="row">
                         <div class="col-6">
-                            <span>Coupon:</span>
-                            <input />
-                            <button type="submit" class="btn-success"> Apply </button>
+                            @if (String.IsNullOrEmpty(Model.CartHeader.CuponCode))
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CuponCode"/>
+                                <button type="submit" asp-action="ApplyCoupon" class="btn-success"> Apply </button>
+                            }else{
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CuponCode" disabled />
+                                <button type="submit" asp-action="RemoveCoupon" class="btn-danger"> Remove </button>
+                            }
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size:21px;">  Order Total : @String.Format("{0:c}",Model.CartHeader.OrderTotal) <br /></span>
