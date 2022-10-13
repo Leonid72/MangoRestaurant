@@ -20,10 +20,15 @@ namespace Mango.Web
             builder.Services.AddHttpClient<ICartService, CartService>();
             builder.Services.AddScoped<ICartService,CartService>();
 
+            builder.Services.AddHttpClient<ICouponService, CouponService>();
+            builder.Services.AddScoped<ICouponService,CouponService>();
+
             builder.Services.AddScoped<IWebApiCaller, WebApiCaller>();
 
             SD.ProuctAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
             SD.ShoppingCartAPIBase = builder.Configuration["ServiceUrls:ShopingCartAPI"];
+            SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
+
             builder.Services.AddAuthentication(option =>
             {
                 option.DefaultScheme = "Cookies";

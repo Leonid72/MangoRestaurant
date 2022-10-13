@@ -2,8 +2,7 @@
 {
     public interface ICouponService
     {
-        Task<bool> ApplyCoupon(string userId, string couponCode);
-        Task<bool> RemoveCoupon(string userId);
+        Task<T> GetCoupon<T>(string couponCode,string token = null);
 
     }
 }

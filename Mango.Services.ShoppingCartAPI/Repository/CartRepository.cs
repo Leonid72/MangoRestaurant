@@ -104,7 +104,7 @@ namespace Mango.Services.ShoppingCartAPI.Repository
         }
 
         public async Task<CartDto> GetCartByUserId(string userId)
-        {
+            {
             Cart cart = new()
             {
                  CartHeader = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId)
