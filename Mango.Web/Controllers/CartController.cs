@@ -91,7 +91,7 @@ namespace Mango.Web.Controllers
             return View(await LoadCartDtoBaseOnLoggedInUser());
         }
 
-        [HttpPost("Checkout")]
+        [HttpPost]
         public async Task<IActionResult> Checkout(CartDto cartDto)
         {
             try
