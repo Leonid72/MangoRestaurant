@@ -9,16 +9,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
-    public class AzureServiceBusConsumer
+    public class AzureServiceBusConsumer : IAzureServiceBusConsumer
     {
         private readonly string serviceBusConnectionString;
         private readonly string subscriptionCheckOut;
         private readonly string checkoutMessageTopic;
-        private readonly IOrderRepository _orderRepository;
+        private readonly OrderRepository _orderRepository;
         private readonly IConfiguration _configuration;
 
         private  ServiceBusProcessor _checkoutProcessor;
-        public AzureServiceBusConsumer(IOrderRepository orderRepository, IConfiguration configuration)
+        public AzureServiceBusConsumer(OrderRepository orderRepository, IConfiguration configuration)
         {
             _orderRepository = orderRepository;
             _configuration = configuration;
