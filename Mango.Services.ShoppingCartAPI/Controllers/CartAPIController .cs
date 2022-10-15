@@ -1,7 +1,10 @@
-﻿using Mango.Services.ShoppingCartAPI.Messages;
+﻿using Mango.MessageBus;
+using Mango.Services.ShoppingCartAPI.Messages;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Mango.Services.ShoppingCartAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
 
 namespace Mango.Services.ShoppingCartAPI.Controllers
 {
@@ -10,11 +13,15 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     public class CartAPIController: Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IMessageBus _messageBus;
         protected ResponseDto _response;
-        public CartAPIController(ICartRepository cartRepository)
+        private static IConfiguration _configuration;
+        public CartAPIController(ICartRepository cartRepository, IMessageBus messageBus, IConfiguration configuration)
         {
             _cartRepository = cartRepository;
-            _response = new ResponseDto();   
+            _messageBus = messageBus;
+            _response = new ResponseDto();
+            _configuration = configuration;
         }
 
         [HttpGet("GetCart/{userId}")]
@@ -139,7 +146,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 if (cartDto == null)
                     return BadRequest();
                 checkoutHeaderDto.CartDetails = cartDto.CartDetails;
-
+                await _messageBus.PublishMessage(checkoutHeaderDto, _configuration["AzureServiceBus:TopicName"]);
             }
             catch (Exception ex)
             {
