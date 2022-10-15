@@ -17,9 +17,10 @@ namespace Mango.MessageBus
         //public AzureServiceBusMessageBus(IConfiguration configuration)
         //{
         //    _configuration = configuration;
+            
         //}
-        //string connectionString = _configuration["AzureServiceBus:ConnectionString"]; //.GetSection("AzureServiceBus").GetSection("ConnectionStrings").Value;
-          
+        //string connectionString = _configuration.GetValue["AzureServiceBus:ConnectionString"]; //.GetSection("AzureServiceBus").GetSection("ConnectionStrings").Value;
+
         public async Task PublishMessage(BaseMessage message, string topicName)
         {
             await using var client = new ServiceBusClient(connectionString);
