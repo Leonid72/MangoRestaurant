@@ -102,7 +102,7 @@ namespace Mango.Services.OrderAPI.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
-                    b.Property<bool>("PaymantStatus")
+                    b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
 
                     b.Property<string>("Phone")

@@ -34,7 +34,7 @@ namespace Mango.Services.OrderAPI.Repository
             var orderHederFromDb = await _db.OrderHeaders.FirstOrDefaultAsync(u => u.OrderHeaderId == orderHeaderId);
             if (orderHederFromDb != null)
             {
-                orderHederFromDb.PaymantStatus = paid;
+                orderHederFromDb.PaymentStatus = paid;
                 _db.OrderHeaders.Update(orderHederFromDb);
                 await _db.SaveChangesAsync();
             }

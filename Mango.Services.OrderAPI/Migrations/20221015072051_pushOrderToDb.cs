@@ -29,7 +29,7 @@ namespace Mango.Services.OrderAPI.Migrations
                     CSV = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpiryMonthYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CartTotalItems = table.Column<int>(type: "int", nullable: false),
-                    PaymantStatus = table.Column<bool>(type: "bit", nullable: false)
+                    PaymentStatus = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
