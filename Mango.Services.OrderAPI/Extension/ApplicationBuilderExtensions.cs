@@ -20,15 +20,7 @@ namespace Mango.Services.OrderAPI.Extension
         }
         private static void OnStart()
         {
-            try
-            {
-                ServiceBusConsumer?.Start();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-          
+            ServiceBusConsumer?.Start();                    
         }
 
         private static void OnStop()
