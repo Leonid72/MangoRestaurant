@@ -13,15 +13,18 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     public class CartAPIController: Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly ICouponRepository _couponRepository;
         private readonly IMessageBus _messageBus;
         protected ResponseDto _response;
         private static IConfiguration _configuration;
-        public CartAPIController(ICartRepository cartRepository, IMessageBus messageBus, IConfiguration configuration)
+        public CartAPIController(ICartRepository cartRepository, IMessageBus messageBus,
+                                IConfiguration configuration, ICouponRepository couponRepository)
         {
             _cartRepository = cartRepository;
             _messageBus = messageBus;
             _response = new ResponseDto();
             _configuration = configuration;
+            _couponRepository = couponRepository;
         }
 
         [HttpGet("GetCart/{userId}")]
@@ -146,6 +149,18 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 if (cartDto == null)
                     return BadRequest();
                 checkoutHeaderDto.CartDetails = cartDto.CartDetails;
+                if (String.IsNullOrEmpty(checkoutHeaderDto.CuponCode))
+                {
+                    CouponDto couponDto = await _couponRepository.GetCoupon(checkoutHeaderDto.CuponCode);
+                    if (checkoutHeaderDto.DiscountTotal != couponDto.DiscountAmount)
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages = new List<string>() { "Coupon Price has changed,please confirm" };
+                        _response.DisplayMessage = "Coupon Price has changed,please confirm";
+                        return _response;
+                    }
+                }
+
                 await _messageBus.PublishMessage(checkoutHeaderDto, _configuration["AzureServiceBus:TopicName"]);
             }
             catch (Exception ex)

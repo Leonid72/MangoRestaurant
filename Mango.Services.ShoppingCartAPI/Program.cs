@@ -18,6 +18,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
+builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(u => 
+                u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponAPI"]));
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
+
 builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

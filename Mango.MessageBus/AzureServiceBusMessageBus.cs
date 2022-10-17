@@ -12,18 +12,20 @@ namespace Mango.MessageBus
 {
     public class AzureServiceBusMessageBus : IMessageBus
     {
-        private string connectionString = "Endpoint=sb://restmango.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=RcDwdGrd8N+ecA6QO2mOJFWkFtxEhwYPSMDK4U8MyT8=";
-        //private static IConfiguration _configuration;
+        private string serviceBusConnectionString = "Endpoint=sb://restmango.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=RcDwdGrd8N+ecA6QO2mOJFWkFtxEhwYPSMDK4U8MyT8=";
+        //private readonly string serviceBusConnectionString;
+        //private readonly IConfiguration _configuration;
         //public AzureServiceBusMessageBus(IConfiguration configuration)
         //{
         //    _configuration = configuration;
-            
+        //    serviceBusConnectionString = _configuration.GetSection("ServiceBusConnectionString").Value;
+
         //}
-        //string connectionString = _configuration.GetValue["AzureServiceBus:ConnectionString"]; //.GetSection("AzureServiceBus").GetSection("ConnectionStrings").Value;
+         //.GetSection("AzureServiceBus").GetSection("ConnectionStrings").Value;
 
         public async Task PublishMessage(BaseMessage message, string topicName)
         {
-            await using var client = new ServiceBusClient(connectionString);
+            await using var client = new ServiceBusClient(serviceBusConnectionString);
             ServiceBusSender sender = client.CreateSender(topicName);
 
             var jsonMessage = JsonConvert.SerializeObject(message);
