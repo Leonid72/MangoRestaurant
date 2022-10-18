@@ -149,7 +149,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 if (cartDto == null)
                     return BadRequest();
                 checkoutHeaderDto.CartDetails = cartDto.CartDetails;
-                if (String.IsNullOrEmpty(checkoutHeaderDto.CuponCode))
+                if (!String.IsNullOrEmpty(checkoutHeaderDto.CuponCode))
                 {
                     CouponDto couponDto = await _couponRepository.GetCoupon(checkoutHeaderDto.CuponCode);
                     if (checkoutHeaderDto.DiscountTotal != couponDto.DiscountAmount)
