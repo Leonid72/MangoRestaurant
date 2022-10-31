@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
+using Mango.MessageBus;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
@@ -14,11 +15,14 @@ namespace Mango.Services.OrderAPI.Messaging
         private readonly string serviceBusConnectionString;
         private readonly string subscriptionCheckOut;
         private readonly string checkoutMessageTopic;
+        private readonly string orderPaymentProcessTopic;
+
         private readonly OrderRepository _orderRepository;
         private readonly IConfiguration _configuration;
-
-        private  ServiceBusProcessor _checkoutProcessor;
-        public AzureServiceBusConsumer(OrderRepository orderRepository, IConfiguration configuration)
+        private readonly IMessageBus _messageBus;
+        private ServiceBusProcessor _checkoutProcessor;
+        public AzureServiceBusConsumer(OrderRepository orderRepository,
+                      IConfiguration configuration, IMessageBus messageBus)
         {
             _orderRepository = orderRepository;
             _configuration = configuration;
@@ -26,7 +30,9 @@ namespace Mango.Services.OrderAPI.Messaging
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
             checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
             subscriptionCheckOut = _configuration.GetValue<string>("SubscriptionCheckOut");
-
+            orderPaymentProcessTopic = _configuration.GetValue<string>("OrderPaymentProcessTopic");
+            
+            _messageBus = messageBus;
             var client = new ServiceBusClient(serviceBusConnectionString);
             _checkoutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionCheckOut);
         }
@@ -42,7 +48,7 @@ namespace Mango.Services.OrderAPI.Messaging
             await _checkoutProcessor.StopProcessingAsync();
             await _checkoutProcessor.DisposeAsync();
         }
-        private  Task ErrorHandler(ProcessErrorEventArgs arg)
+        private Task ErrorHandler(ProcessErrorEventArgs arg)
         {
             Console.WriteLine(arg.Exception.ToString());
             return Task.CompletedTask;
@@ -74,7 +80,8 @@ namespace Mango.Services.OrderAPI.Messaging
             };
             foreach (var detailList in checkoutHeaderDto.CartDetails)
             {
-                OrderDetails orderDetails = new OrderDetails() {
+                OrderDetails orderDetails = new OrderDetails()
+                {
 
                     ProductId = detailList.ProductId,
                     ProductName = detailList.Product.Name,
@@ -85,7 +92,26 @@ namespace Mango.Services.OrderAPI.Messaging
                 orderHeader.OrderDetails.Add(orderDetails);
             }
             await _orderRepository.AddOrder(orderHeader);
-            
+
+            PaymentRequestMessage requestMessage = new()
+            {
+                Name = orderHeader.FirstName + " " + orderHeader.LastName,
+                CardNumber = orderHeader.CardNumber,
+                CSV = orderHeader.CSV,
+                ExpiryMonthYear = orderHeader.ExpiryMonthYear,
+                OrderId = orderHeader.OrderHeaderId,
+                OrderTotal = orderHeader.OrderTotal
+            };
+            try
+            {
+                await _messageBus.PublishMessage(requestMessage, orderPaymentProcessTopic);
+                args.CompleteMessageAsync(args.Message);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
