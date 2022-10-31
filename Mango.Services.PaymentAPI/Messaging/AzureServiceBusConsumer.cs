@@ -72,10 +72,10 @@ namespace Mango.Services.PaymentAPI.Messaging
                 await _messageBus.PublishMessage(updatePaymentResult, orderupdatepaymentresulttopic);
                 args.CompleteMessageAsync(args.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }
