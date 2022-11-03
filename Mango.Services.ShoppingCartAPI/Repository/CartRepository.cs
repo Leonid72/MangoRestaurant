@@ -33,8 +33,8 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             var cartHeaderFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
             if (cartHeaderFromDb != null)
             {
-                _db.CartDetails.RemoveRange(_db.CartDetails
-                    .FirstOrDefault(u => u.CartHeaderId == cartHeaderFromDb.CartHeaderId));
+                CartDetails cartDetails = await _db.CartDetails.FirstOrDefaultAsync(u => u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
+                _db.CartDetails.RemoveRange(cartDetails);
                 _db.CartHeaders.Remove(cartHeaderFromDb);
                 await _db.SaveChangesAsync();
                 return true;
