@@ -25,7 +25,7 @@ builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 
 builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
-builder.Services.AddSingleton<IRabbitMQCartMessageSender, RabbitMQCartMessageSender>();
+builder.Services.AddSingleton<IRabbitMQCartMessageSender, RabbitMQCartMessageSender>(); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
