@@ -166,7 +166,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 }
                 checkoutHeaderDto.CartDetails = cartDto.CartDetails;
                 //await _messageBus.PublishMessage(checkoutHeaderDto, _configuration["AzureServiceBus:TopicName"]);
-                _rabbitMQCartMessage.SendMessage(checkoutHeaderDto, "checkoutqueue ");
+                _rabbitMQCartMessage.SendMessage(checkoutHeaderDto, "checkoutqueue");
                 _cartRepository.ClearCart(checkoutHeaderDto.UserId);
             }
             catch (Exception ex)
